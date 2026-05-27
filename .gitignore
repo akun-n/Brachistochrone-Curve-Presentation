@@ -1,0 +1,11 @@
+# 1. Ignore absolutely everything in the project
+*
+
+# 2. Un-ignore all Python files
+!*.py
+
+# 3. Un-ignore the .gitignore file itself (so Git remembers these rules!)
+!.gitignore
+
+# 4. Un-ignore index.html (Since you mentioned wanting this in your previous message)
+!index.html
