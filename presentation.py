@@ -27,8 +27,8 @@ class BrachistochronePresentation(Slide,
       self.next_slide()
       # Top bırakma animasyonu
       self.history_of_the_challenge()
-
-      """
+      self.next_slide()
+      
       self.race()
       self.next_slide()
 
@@ -79,7 +79,7 @@ class BrachistochronePresentation(Slide,
       self.cycloid_derivation()
       self.next_slide()
 
-      # 1. Setup the initial full-screen graph and points
+      """# 1. Setup the initial full-screen graph and points
       self.setup_graph()
       self.next_slide()
 
