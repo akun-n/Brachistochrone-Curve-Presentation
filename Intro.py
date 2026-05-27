@@ -132,3 +132,104 @@ class Intro:
         everything = VGroup(greek, phonetic_text, brace_shortest, brace_time, dotted_word, text_shortest, text_time)
         self.next_slide()
         self.play(FadeOut(everything))
+
+    def history_of_the_challenge(self):
+        
+        # 1. UPDATED Portrait Builder
+        def get_portrait(name, image_path, width1, height1, imageHeight):
+            # The outer frame
+            frame = RoundedRectangle(width=width1, height=height1, corner_radius=0.1, color=WHITE, fill_color=BLACK, fill_opacity=1)
+            
+            # Load the actual image file
+            pic_area = ImageMobject(image_path)
+            
+            # Resize the image to fit perfectly inside our frame
+            pic_area.set_height(imageHeight)
+            pic_area.next_to(frame.get_top(), DOWN, buff=0.1)
+            
+            # The name label at the bottom
+            label = Text(name, font_size=20, weight=BOLD).next_to(pic_area, DOWN, buff=0.2)
+            
+            # --- FIX: We must use Group() instead of VGroup() because pic_area is an ImageMobject ---
+            return Group(frame, pic_area, label)
+
+        # 2. The Envelope Builder 
+        def get_envelope():
+            body = Rectangle(width=0.6, height=0.4, color=WHITE, fill_color=LIGHT_GREY, fill_opacity=1)
+            flap_left = Line(body.get_corner(UL), body.get_center() + UP * 0.05, color=BLACK, stroke_width=2)
+            flap_right = Line(body.get_corner(UR), body.get_center() + UP * 0.05, color=BLACK, stroke_width=2)
+            return VGroup(body, flap_left, flap_right)
+
+        # ==========================================
+        # ACT 1: INTRODUCING JOHANN BERNOULLI
+        # ==========================================
+        
+        title = Text("History of The Challenge (1696)", color=YELLOW)
+        self.play(Write(title))
+        self.wait(0.5)
+        johann = get_portrait("Johann Bernoulli", "assets/johann.jpg", 4, 4, 3.4)
+        
+        self.next_slide()
+        
+        self.play(FadeIn(johann, shift=UP * 0.5), title.animate.to_edge(UP, buff=0.2).scale(0.7))
+        self.wait(1.5)
+        
+        self.next_slide()
+
+        self.play(johann.animate.to_edge(LEFT, buff=1.0))
+
+        # ==========================================
+        # ACT 2: THE RIVALS
+        # ==========================================
+        
+        newton = get_portrait("Isaac Newton", "assets/newton.jpg", 2.2, 2.8, 2)
+        jakob = get_portrait("Jakob Bernoulli", "assets/jakob.jpg", 2.2, 2.8, 2)
+        leibniz = get_portrait("Gottfried Leibniz", "assets/leibniz.jpg", 2.2, 2.8, 2)
+        lhopital = get_portrait("L'Hôpital", "assets/lhopital.jpg", 2.2, 2.8, 2)
+
+        # --- FIX: rivals must also be a standard Group because it contains ImageMobjects ---
+        rivals = Group(newton, jakob, leibniz, lhopital)
+        rivals.arrange_in_grid(rows=2, cols=2, buff=0.5).to_edge(RIGHT, buff=1.0)
+        
+        # ==========================================
+        # ACT 3: SENDING THE LETTERS
+        # ==========================================
+        
+        # --- FIX: Standard Group used here as well for consistency ---
+        envelopes = Group(*[get_envelope().move_to(johann.get_center()) for _ in rivals])
+        self.add(envelopes, johann)
+        
+        self.play(
+            *[env.animate.move_to(rival.get_center()) for env, rival in zip(envelopes, rivals)],
+            run_time=2, rate_func=smooth, lag_ratio=0.1 
+        )
+        self.wait(0.2)
+
+        # We use a crossfade with a scale effect instead of a mathematical transform
+        # so Manim doesn't try to bend vector shapes into raster .jpg images!
+        self.play(
+            *[FadeOut(env, scale=0.5) for env in envelopes],
+            *[FadeIn(rival, scale=0.5) for rival in rivals],
+            run_time=1.5
+        )
+        self.next_slide()
+
+        bigger_than = Text(">", weight=SEMIBOLD, color=BLUE).scale(1.5).shift(LEFT*0.2)
+        smaller_than = Text("<", weight=SEMIBOLD, color=RED).scale(1.5).shift(LEFT*0.3)
+        question = Text("?", color=ORANGE).scale(1.5).shift(LEFT*0.18)
+        self.play(Write(bigger_than))
+
+        self.next_slide()
+
+        newton_note = Text("Solved in 1 night!", font_size=16, color=YELLOW).next_to(newton, DOWN, buff=0.1)
+        self.play(Write(newton_note))
+        self.play(Write(question), question.animate.shift(DOWN*0.7))
+
+        self.next_slide()
+
+        self.play(Transform(bigger_than, smaller_than), FadeOut(question))
+        self.wait(1)
+        self.next_slide()
+
+        self.play(*[FadeOut(mob) for mob in self.mobjects])
+        self.wait(1)

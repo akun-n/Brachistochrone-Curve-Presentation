@@ -9,3 +9,7 @@
 
 # 4. Un-ignore index.html (Since you mentioned wanting this in your previous message)
 !index.html
+
+!assets/
+
+!assets/**
