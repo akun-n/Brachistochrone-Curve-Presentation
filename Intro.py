@@ -14,7 +14,7 @@ class Intro:
         # 1. Title
         self.play(FadeOut(self.all))
 
-        title = Tex("For the next 13 minutes:")
+        title = Tex("For the next 12 minutes:")
         title.to_edge(UP, buff=1)
 
         # Adjust start, end, and split points to change the line's proportions
@@ -36,7 +36,7 @@ class Intro:
         tick5 = Line(UP * (tick_height/2), DOWN * (tick_height/2), color=BLUE_C).move_to(derivation2)
         tick6 = Line(UP * (tick_height/2), DOWN * (tick_height/2), color=BLUE_C).move_to(end_point)
 
-        timeline_group = VGroup(timeline, tick1, tick2, tick3, tick4, tick5, tick6)
+        timeline_group = VGroup(timeline, tick1, tick2, tick3, tick5, tick6)
 
         # 3. First Brace and Text (Bottom)
         brace_history = BraceBetweenPoints(tick1.get_bottom(), tick2.get_bottom(), direction=DOWN)   
@@ -48,17 +48,17 @@ class Intro:
         brace_curve = BraceBetweenPoints(tick2.get_top(), tick3.get_top(), direction=UP)
         text_curve = Tex("Curve analysis", color=WHITE).next_to(brace_curve, UP)
 
-        brace_derivation1 = BraceBetweenPoints(tick3.get_bottom(), tick4.get_bottom(), direction=DOWN)
-        text_derivation1 = Tex("1st Derivation", color=WHITE).next_to(brace_derivation1, DOWN)
+        brace_derivation1 = BraceBetweenPoints(tick3.get_bottom(), tick5.get_bottom(), direction=DOWN)
+        text_derivation1 = Tex("Finding brachistochrone", color=WHITE).next_to(brace_derivation1, DOWN)
 
 
-        brace_derivation2 = BraceBetweenPoints(tick4.get_top(), tick5.get_top(), direction=UP)
+        """brace_derivation2 = BraceBetweenPoints(tick4.get_top(), tick5.get_top(), direction=UP)
         text_derivation2 = VGroup(Tex("A Brief look to"),
                                   Tex("the 2nd Derivation")
-                                  ).arrange(DOWN, buff=0.15).next_to(brace_derivation2, UP)
+                                  ).arrange(DOWN, buff=0.15).next_to(brace_derivation2, UP)"""
 
-        brace_questions = BraceBetweenPoints(tick5.get_bottom(), tick6.get_bottom(), direction=DOWN)
-        text_questions = Tex("Questions", color=WHITE).next_to(brace_questions, DOWN)
+        brace_questions = BraceBetweenPoints(tick5.get_top(), tick6.get_top(), direction=UP)
+        text_questions = Tex("Questions", color=WHITE).next_to(brace_questions, UP)
 
 
         # --- Animations Sequence ---
@@ -72,11 +72,11 @@ class Intro:
 
         self.play(GrowFromCenter(brace_derivation1), Write(text_derivation1))
         
-        self.play(GrowFromCenter(brace_derivation2), Write(text_derivation2))
+        """self.play(GrowFromCenter(brace_derivation2), Write(text_derivation2))"""
         
         self.play(GrowFromCenter(brace_questions), Write(text_questions))
 
-        groupEverything = VGroup(title, timeline_group, brace_history, text_history, brace_curve, text_curve, brace_derivation1, text_derivation1, brace_derivation2, text_derivation2, brace_questions, text_questions)
+        groupEverything = VGroup(title, timeline_group, brace_history, text_history, brace_curve, text_curve, brace_derivation1, text_derivation1, brace_questions, text_questions)
         
         self.next_slide()
         
@@ -132,6 +132,95 @@ class Intro:
         everything = VGroup(greek, phonetic_text, brace_shortest, brace_time, dotted_word, text_shortest, text_time)
         self.next_slide()
         self.play(FadeOut(everything))
+
+    def challenge_statement(self):
+        # 1. Clean slate just in case
+        if self.mobjects:
+            self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=0.5)
+
+        # 2. Setup a clean xy-plane (No numbers to keep the visual pure)
+        axes = Axes(
+            x_range=[0, 10, 1],
+            y_range=[0, 6, 1],
+            x_length=8,
+            y_length=4.8,
+            axis_config={"color": GREY},
+        ).shift(DOWN * 0.2)
+
+        # 3. Plot Points A and B (clearly visible, off the axes)
+        pA = axes.c2p(1, 5)
+        pB = axes.c2p(9, 1)
+
+        dot_A = Dot(pA, color=WHITE, radius=0.1)
+        dot_B = Dot(pB, color=WHITE, radius=0.1)
+
+        # Minimalist labels
+        label_A = MathTex("A", font_size=48).next_to(dot_A, UP, buff=0.2)
+        label_B = MathTex("B", font_size=48).next_to(dot_B, RIGHT, buff=0.2)
+
+        # Fade in the environment
+        self.play(Create(axes))
+        self.play(
+            FadeIn(dot_A, shift=DOWN*0.5), Write(label_A),
+            FadeIn(dot_B, shift=UP*0.5), Write(label_B)
+        )
+        
+        # ---> Pause here to start explaining the setup: "Imagine two points, A and B..."
+        self.next_slide()
+
+        # 4. Generate 11 Crazy Paths
+        paths = VGroup()
+
+        # Path 1: The Intuitive Straight Line
+        paths.add(Line(pA, pB, color=BLUE, stroke_width=3))
+        
+        # Path 2: Shallow Arc
+        paths.add(ArcBetweenPoints(pA, pB, angle=-PI/6, color=GREEN, stroke_width=3))
+        
+        # Path 3: Upward Arc (Against gravity, but still a geometric path!)
+        paths.add(ArcBetweenPoints(pA, pB, angle=PI/4, color=RED, stroke_width=3))
+        
+        # Path 4: The 'L' Drop (Max acceleration, then flat)
+        paths.add(VMobject(color=TEAL, stroke_width=3).set_points_as_corners([pA, axes.c2p(1, 1), pB]))
+        
+        # Path 5: The 'L' Slide (Zero acceleration initially)
+        paths.add(VMobject(color=ORANGE, stroke_width=3).set_points_as_corners([pA, axes.c2p(9, 5), pB]))
+        
+        # Path 6: Wavy Sine-like path
+        paths.add(VMobject(color=PINK, stroke_width=3).set_points_smoothly([pA, axes.c2p(3, 4), axes.c2p(5, 6), axes.c2p(7, 3), pB]))
+        
+        # Path 7: Bouncing Path
+        paths.add(VMobject(color=LIGHT_BROWN, stroke_width=3).set_points_smoothly([pA, axes.c2p(2.5, 1), axes.c2p(4, 3.5), axes.c2p(6.5, 0.5), pB]))
+        
+        # Path 8: The Loop-de-loop
+        paths.add(VMobject(color=MAROON, stroke_width=3).set_points_smoothly([pA, axes.c2p(6, 5), axes.c2p(7.5, 2.5), axes.c2p(4.5, 2.5), axes.c2p(6, 0.5), pB]))
+        
+        # Path 9: Staircase
+        paths.add(VMobject(color=LIGHT_GRAY, stroke_width=3).set_points_as_corners([pA, axes.c2p(3, 5), axes.c2p(3, 3), axes.c2p(6, 3), axes.c2p(6, 1), pB]))
+        
+        # Path 10: Late Drop Curve
+        paths.add(CubicBezier(pA, pA + RIGHT*6, pB + UP*4, pB, color=PURPLE, stroke_width=3))
+        
+        # Path 11: Deep Drop (The foreshadowing shape!)
+        paths.add(ArcBetweenPoints(pA, pB, angle=PI/1.1, color=YELLOW, stroke_width=4))
+
+        # 5. Animate drawing all paths like a brainstorm!
+        # lag_ratio=0.3 makes them trace sequentially, but overlapping, creating a beautiful chaotic build-up.
+        self.play(
+            AnimationGroup(
+                *[Create(path) for path in paths], 
+                lag_ratio=0.3
+            ),
+            run_time=6,
+            rate_func=linear
+        )
+        
+        # ---> Pause here to ask the ultimate question: "Out of all these infinite possibilities... which is the fastest?"
+        self.next_slide()
+
+        # 6. Clean fade out before moving to the historical drama
+        self.play(*[FadeOut(mob) for mob in self.mobjects])
+        self.wait(1)
 
     def history_of_the_challenge(self):
         

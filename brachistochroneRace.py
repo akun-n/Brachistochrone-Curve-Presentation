@@ -145,6 +145,7 @@ class BrachistochroneRace(Scene):
         
         self.play(Create(path_straight), Write(title_straight))
         self.play(FadeIn(pro_straight, shift=UP*0.2), FadeIn(con_straight, shift=UP*0.2))
+        self.wait(1)
         self.next_slide()
 
         # --- EXTREME 2: Steep Drop ---
@@ -158,6 +159,7 @@ class BrachistochroneRace(Scene):
             ReplacementTransform(pro_straight, pro_steep),
             ReplacementTransform(con_straight, con_steep),
         )
+        self.wait(1)
         self.next_slide()
 
         # --- THE CLIFFHANGER: Finding the Balance ---
@@ -177,7 +179,7 @@ class BrachistochroneRace(Scene):
         
         # Add a large question mark in the middle to emphasize the unknown solution
         question_mark = Text("?", font_size=120, color=GOLD).move_to(axes.c2p(4.5, 3))
-
+        self.wait(1)
         self.play(Write(question_mark))
 
         self.next_slide()

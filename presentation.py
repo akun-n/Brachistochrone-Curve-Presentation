@@ -6,17 +6,19 @@ from brachistochroneRace import BrachistochroneRace
 from derivSnell import DerivationSnellsLaw
 from usingSnell import StratifiedMedium
 from cycloidDeriv import MathematicalDerivation
+from Outro import Outro
 class BrachistochronePresentation(Slide,
                                   Intro,
                                   BrachistochroneRace,
                                   TimeDerivationAnimations,
                                   DerivationSnellsLaw,
                                   StratifiedMedium,
+                                  Outro,
                                   MathematicalDerivation):
     def construct(self):
       
-       # GİRİŞ --> Bütün insanlar, tarihçe
-
+      # GİRİŞ --> Bütün insanlar, tarihçe
+      """
       self.show_title()
       self.next_slide()
 
@@ -25,7 +27,10 @@ class BrachistochronePresentation(Slide,
 
       self.show_brachistochroneWord()
       self.next_slide()
-      # Top bırakma animasyonu
+
+      self.challenge_statement()
+      self.next_slide()
+      
       self.history_of_the_challenge()
       self.next_slide()
       
@@ -35,8 +40,7 @@ class BrachistochronePresentation(Slide,
       self.balance()
       self.next_slide()
 
-      # İlk derivation snell falan
-
+      # Snell
       self.define_variables_and_functions()
       self.next_slide()
 
@@ -49,7 +53,7 @@ class BrachistochronePresentation(Slide,
       self.setup_graph()
       self.next_slide()
 
-      # 2. Animate the particle sliding down"
+      # 2. Animate the particle sliding down
       self.animate_particle()
       self.next_slide()
 
@@ -72,14 +76,21 @@ class BrachistochronePresentation(Slide,
 
       self.snells_law_everywhere()
       self.next_slide()
-
+      """
       self.final_race()
       self.next_slide()
-
+      """
       self.cycloid_derivation()
       self.next_slide()
 
-      """# 1. Setup the initial full-screen graph and points
+      self.questions_section()
+      self.next_slide()
+      
+      self.resources_section()
+      self.next_slide()
+      
+
+      # 1. Setup the initial full-screen graph and points
       self.setup_graph()
       self.next_slide()
 
