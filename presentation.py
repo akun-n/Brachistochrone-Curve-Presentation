@@ -17,8 +17,6 @@ class BrachistochronePresentation(Slide,
                                   MathematicalDerivation):
     def construct(self):
       
-      # GİRİŞ --> Bütün insanlar, tarihçe
-      """
       self.show_title()
       self.next_slide()
 
@@ -52,19 +50,15 @@ class BrachistochronePresentation(Slide,
 
       self.setup_graph()
       self.next_slide()
-
-      # 2. Animate the particle sliding down
+      
       self.animate_particle()
       self.next_slide()
 
-      # 3. Zoom into the curve to explicitly show ds, dx, dy
       self.zoom_to_infinitesimal()
       self.next_slide()
 
-      # 4. Shrink and move the graph to the left
       self.shrink_and_move_left()
 
-      # 5. Derive velocity step-by-step using Energy Conservation
       self.derive_velocity2()
       self.next_slide()
 
@@ -76,10 +70,10 @@ class BrachistochronePresentation(Slide,
 
       self.snells_law_everywhere()
       self.next_slide()
-      """
+
       self.final_race()
       self.next_slide()
-      """
+
       self.cycloid_derivation()
       self.next_slide()
 
@@ -89,7 +83,7 @@ class BrachistochronePresentation(Slide,
       self.resources_section()
       self.next_slide()
       
-
+      """
       # 1. Setup the initial full-screen graph and points
       self.setup_graph()
       self.next_slide()

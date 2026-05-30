@@ -186,7 +186,6 @@ class StratifiedMedium(Scene):
         eq_2_v = get_snells_eq(r"\theta_2", r"\theta_3", "v_2", "v_3")
         
         # Smoothly morph the old inset into the new one
-        self.next_slide()
         self.play(
             ReplacementTransform(base_1, base_2),
             ReplacementTransform(eq_1_y, eq_2_v),

@@ -102,10 +102,11 @@ class BrachistochroneRace(Scene):
 
             self.play(Write(new_row))
             self.play(FadeOut(ball))
-            
+                    
+            self.wait(1)
             self.next_slide()
 
-        self.wait(1)
+
 
         # --- NEW: Fade out every single object remaining on screen ---
         self.play(
@@ -129,7 +130,6 @@ class BrachistochroneRace(Scene):
         label_b = Tex("B").next_to(point_b, RIGHT)
 
         self.play(FadeIn(axes, point_a, point_b, label_a, label_b))
-        self.next_slide()
 
         # 2. Mathematical Functions for the extremes
         def straight_func(x): return 5 - 0.5 * (x - 1)
