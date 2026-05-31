@@ -143,6 +143,7 @@ class TimeDerivationAnimations:
         self.wait(0.5)
         self.play(Write(eq4))
         self.wait(0.5)
+        self.next_slide()
         self.play(TransformMatchingTex(eq4, eq4_delta))
         self.wait(0.5)
         self.play(Write(eq5_delta))

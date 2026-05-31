@@ -81,7 +81,7 @@ class Outro(Scene):
         # ==========================================
         # 2. THE RACE LOOP
         # ==========================================
-        loop_count = 10 
+        loop_count = 40 
 
         for i in range(loop_count):
             # Randomize points
